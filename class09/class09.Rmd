@@ -1,0 +1,186 @@
+---
+title: "class09.Rmd"
+author: "Kamron Kimball"
+date: "2/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Generate some example data for clustering
+```{r}
+# Generate some example data for clustering
+tmp <- c(rnorm(30,-3), rnorm(30,3))
+x <- cbind(x=tmp, y=rev(tmp))
+plot(x)
+
+km <- kmeans(x,center=2,nstart=20)
+
+```
+
+Q. How many points are in each cluster?
+Q. What ‘component’ of your result object details
+ - cluster size?
+ - cluster assignment/membership?
+ - cluster center?
+
+```{r}
+km$cluster
+length(km$cluster)
+table(km$cluster)
+```
+
+plot x colored by the kmeans cluster assignment and
+    add cluster centers as blue points
+```{r}
+plot(x,col=km$cluster)
+points(km$centers,col="blue")
+```
+
+
+## Hierarchical clustering in R
+
+The main Hierarchical clustering function in R is caled 'hclust()'.
+An important point is that you have to calculte the distance matrix deom your input data before calling 'hclust()'.
+
+```{r}
+# First we need to calculate point (dis)similarity
+# as the Euclidean distance between observations
+dist_matrix <- dist(x)
+# The hclust() function returns a hierarchical
+# clustering model
+hc <- hclust(d = dist_matrix)
+# the print method is not so useful here
+hc
+Call:
+hclust(d = dist_matrix)
+Cluster method : complete
+Distance : euclidean
+Number of objects: 60 
+```
+
+```{r}
+#We will use our x again from above
+d <- dist(x)
+hc <- hclust(d)
+plot(hc)
+```
+
+```{r}
+# Our input is a distance matrix from the dist()
+# function. Lets make sure we understand it first
+dist_matrix <- dist(x)
+dim(dist_matrix)
+NULL
+View( as.matrix(dist_matrix) )
+dim(x)
+[1] 60 2
+dim( as.matrix(dist_matrix) )
+[1] 60 60
+# Note. symmetrical pairwise distance matrix
+```
+
+```{r}
+# Create hierarchical cluster model: hc
+hc <- hclust(dist(x))
+# We can plot the results as a dendrogram
+plot(hc)
+# What do you notice?
+# Does the dendrogram
+# make sense based on
+# your knowledge of x?
+```
+
+```{r}
+# Draws a dendrogram
+plot(hc)
+abline(h=6, col="red", lty=2) 
+abline(h=4, col="blue")
+cutree(hc, h=6) #Cut by height h
+```
+
+To get cluster membership vector i need to "cut" the tree at a certain height to yield my separate cluster branches.
+
+```{r}
+cutree(hc, h=4)
+```
+
+```{r}
+gp4 <-  cutree(hc, h=4)
+table(gp4)
+```
+
+```{r}
+# Step 1. Generate some example data for clustering
+x <- rbind(
+ matrix(rnorm(100, mean=0, sd = 0.3), ncol = 2), # c1
+ matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2), # c2
+ matrix(c(rnorm(50, mean = 1, sd = 0.3), # c3
+ rnorm(50, mean = 0, sd = 0.3)), ncol = 2))
+colnames(x) <- c("x", "y")
+# Step 2. Plot the data without clustering
+plot(x)
+# Step 3. Generate colors for known clusters
+# (just so we can compare to hclust results)
+col <- as.factor( rep(c("c1","c2","c3"), each=50) )
+plot(x, col=col)
+```
+
+Q. Use the dist(), hclust(), plot() and cutree()
+ functions to return 2 and 3 clusters
+Q. How does this compare to your known 'col' groups?
+
+```{r}
+z <- dist(x)
+v <- hclust(z)
+
+#Use "cutree" to get a cluster membership vector
+ct <- cutree(v,h=2)
+
+plot(v, col=ct)
+table(ct)
+
+#Make a plot that is grouped by ct
+plot(x, col=ct)
+```
+
+```{r}
+ukf <- read.csv("Data/UK_foods.csv", row.names=1)
+ukf
+barplot(as.matrix(ukf), beside=T, col=rainbow(nrow(ukf)))
+
+```
+
+a "Pairs" plot can be useful when we have small datasets like this one but often we are 
+
+```{r}
+pairs(ukf, col=rainbow(10), pch=16)
+```
+
+We can use PCA to better visualize this data
+
+Principal Component analysis (PCA) with the "prcomp()" function
+```{r}
+# Use the prcomp() PCA function 
+pca <- prcomp( t(ukf) )
+summary(pca)
+```
+
+What is in my result object "pca"
+```{r}
+attributes(pca)
+```
+
+```{r}
+plot(pca$x[,1], pca$x[,2], xlab="PC1", ylab="PC2", xlim=c(-270,500))
+text(pca$x[,1], pca$x[,2], colnames(ukf), col=rainbow(4))
+```
+
+
+
+
+
+
+
