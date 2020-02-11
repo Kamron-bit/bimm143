@@ -38,7 +38,7 @@ nrow(wisc.df$diagnosis)
 Q2. How many of the observations have a malignant diagnosis?
 
 ```{r}
-table(wisc.df)
+#table(wisc.df)
 ```
 
 ```{r}
