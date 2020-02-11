@@ -1,2 +1,3 @@
 # bimm143
-first git repository
+
+This is my classwork from BIMM 143 winter 2020 at UCSD.
