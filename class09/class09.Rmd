@@ -2,7 +2,7 @@
 title: "class09.Rmd"
 author: "Kamron Kimball"
 date: "2/4/2020"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -46,20 +46,19 @@ The main Hierarchical clustering function in R is caled 'hclust()'.
 An important point is that you have to calculte the distance matrix deom your input data before calling 'hclust()'.
 
 ```{r}
-# First we need to calculate point (dis)similarity
 # as the Euclidean distance between observations
 dist_matrix <- dist(x)
 # The hclust() function returns a hierarchical
 # clustering model
 hc <- hclust(d = dist_matrix)
 # the print method is not so useful here
+```
 hc
 Call:
 hclust(d = dist_matrix)
-Cluster method : complete
+#Cluster method : complete
 Distance : euclidean
-Number of objects: 60 
-```
+#Number of objects: 60 
 
 ```{r}
 #We will use our x again from above
@@ -76,9 +75,9 @@ dim(dist_matrix)
 NULL
 View( as.matrix(dist_matrix) )
 dim(x)
-[1] 60 2
+#[1] 60 2
 dim( as.matrix(dist_matrix) )
-[1] 60 60
+#[1] 60 60
 # Note. symmetrical pairwise distance matrix
 ```
 
