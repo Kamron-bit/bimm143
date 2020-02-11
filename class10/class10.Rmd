@@ -1,0 +1,109 @@
+---
+title: "class10 R Markdown"
+author: "Kamron Kimball"
+date: "2/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+# Save your input data file to a new 'data' directory
+fna.data <- "data/WisconsinCancer (1).csv"
+
+# Complete the following code to input the data and store as wisc.df
+wisc.df <- read.csv("data/WisconsinCancer (1).csv")
+head(wisc.df)
+```
+
+
+There are some funkey things in this dataset that we will ignore for our analysis. This includes the ID and Diagnosis columns and the funny last X column.
+
+
+```{r}
+# Convert the features of the data: wisc.data
+wisc.data <- as.matrix(wisc.df[,3:32])
+head(wisc.data)
+```
+
+Q. How many patients do we have data for?
+
+```{r}
+nrow(wisc.df$diagnosis)
+```
+
+Q2. How many of the observations have a malignant diagnosis?
+
+```{r}
+table(wisc.df)
+```
+
+```{r}
+# Set the row names of wisc.data
+row.names(wisc.data) <- wisc.df$id
+#head(wisc.data)
+```
+
+Q3. How many variables/features in the data are suffixed with _mean?
+
+```{r}
+grep("_mean", colnames(wisc.data))
+grep("_mean", colnames(wisc.data), value=T)
+length(grep("_mean", colnames(wisc.data)))
+
+```
+
+
+
+## 2. Principal Component Analysis
+
+The next step in your analysis is to perform principal component analysis (PCA) on wisc.data.
+
+It is important to check if the data need to be scaled before performing PCA. Recall two common reasons for scaling data include:
+
+ - The input variables use different units of measurement.
+ - The input variables have significantly different variances.
+Check the mean and standard deviation of the features (i.e. columns) of the wisc.data to determine if the data should be scaled. Use the colMeans() and apply() functions like you’ve done before.
+
+```{r}
+# Check column means and standard deviations
+colMeans(wisc.data)
+
+apply(wisc.data,2,sd)
+```
+
+
+
+```{r}
+round(apply(wisc.data, 2, sd), 2)
+```
+
+Looks like we need to scale=T!!
+
+```{r}
+# Perform PCA on wisc.data by completing the following code
+wisc.pr <- prcomp( wisc.data, scale=TRUE)
+summary(wisc.pr)
+```
+
+> Q. From your results, what proportion of the original variance is captured by the first principal components (PC1)?
+
+The 1st PC captures 44.27% of the original variance. Note that 72.6% is captured in the first 3 PCs..
+
+Lets make some figures...
+```{r}
+biplot(wisc.pr)
+```
+
+That is a hot mess! We need to do our own PC1 vs PC2 plot and lets color by the diagnosis.
+
+```{r}
+attributes(wisc.pr)
+plot(wisc.pr$x[,1], wisc.pr$x[,2])
+```
+
+
+
