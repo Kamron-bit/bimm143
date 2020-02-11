@@ -143,8 +143,8 @@ abline(h=4, col="blue")
 cutree(hc, h=6) #Cut by height h
 ```
 
-    ##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2
-    ## [39] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ##  [1] 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 3 4 4 4 4 4 4 4
+    ## [39] 4 4 4 4 4 4 4 4 4 4 4 3 4 4 4 4 4 4 4 4 4 4
 
 To get cluster membership vector i need to “cut” the tree at a certain
 height to yield my separate cluster branches.
@@ -153,8 +153,8 @@ height to yield my separate cluster branches.
 cutree(hc, h=4)
 ```
 
-    ##  [1] 1 2 1 1 3 3 2 1 2 3 2 1 1 2 2 2 1 3 2 1 1 1 3 2 1 2 1 1 1 1 4 4 4 4 5 4 5 6
-    ## [39] 4 4 4 5 6 4 5 5 5 4 4 5 6 5 4 5 6 6 4 4 5 4
+    ##  [1] 1 1 2 1 1 1 2 2 1 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 2 1 3 4 5 6 5 6 5 5 5
+    ## [39] 5 5 5 5 5 5 5 5 5 5 5 4 5 5 6 6 5 5 5 6 5 5
 
 ``` r
 gp4 <-  cutree(hc, h=4)
@@ -163,7 +163,7 @@ table(gp4)
 
     ## gp4
     ##  1  2  3  4  5  6 
-    ## 15 10  5 15 10  5
+    ## 23  5  2  2 23  5
 
 ``` r
 # Step 1. Generate some example data for clustering
@@ -208,8 +208,8 @@ table(ct)
 ```
 
     ## ct
-    ##  1  2  3  4 
-    ## 38 72 23 17
+    ##  1  2  3 
+    ## 57 36 57
 
 ``` r
 #Make a plot that is grouped by ct
