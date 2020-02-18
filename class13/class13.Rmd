@@ -31,7 +31,17 @@ lig <- atom.select(hiv, "ligand", value=T)
 write.pdb(lig, file="1hsg_ligand.pdb")
 ```
 
+```{r}
+ library(bio3d)
+res <- read.pdb("all.pdbqt", multi=TRUE)
+write.pdb(res, "results.pdb")
+```
 
+```{r}
+res <- read.pdb("all.pdbqt", multi=TRUE)
+ori <- read.pdb("1hsg_ligand.pdbqt")
+rmsd(ori, res)
+```
 
 
 
