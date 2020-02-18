@@ -2,7 +2,7 @@
 title: "class13.Rmd"
 author: "Kamron Kimball"
 date: "2/18/2020"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -16,5 +16,25 @@ We will us the **bio3d** functions 'get.pdb()', 'read,pdb()', 'atom.select()', a
 library(bio3d)
 file.name <- get.pdb("1hsg")
 hiv <- read.pdb(file.name)
+hiv
 ```
+
+Select protein only
+```{r}
+prot <- atom.select(hiv, string = "protein", value=T)
+write.pdb(prot, file="1hsg_protein.pdb")
+```
+
+Select and write out ligan file only
+```{r}
+lig <- atom.select(hiv, "ligand", value=T)
+write.pdb(lig, file="1hsg_ligand.pdb")
+```
+
+
+
+
+
+
+
 
