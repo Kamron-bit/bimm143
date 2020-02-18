@@ -1,0 +1,20 @@
+---
+title: "class13.Rmd"
+author: "Kamron Kimball"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Here we w ill download the 1HSG PDB structure from the online database, remov the bound drug from merk and write out a protein only PDB file and a drug only PDB file.
+
+We will us the **bio3d** functions 'get.pdb()', 'read,pdb()', 'atom.select()', and finally 'write.pdb()'.
+```{r}
+library(bio3d)
+file.name <- get.pdb("1hsg")
+hiv <- read.pdb(file.name)
+```
+
