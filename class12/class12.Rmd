@@ -39,8 +39,56 @@ HIV-1 protease structures are in the current PDB?
 
 1289
 
+
+## Hands on Section 2
+
+
+# Install packages in the R console not your Rmd
 ```{r}
+# Install packages in the R console not your Rmd
+
+install.packages("bio3d")
+install.packages("ggplot2")
+install.packages("ggrepel")
+install.packages("devtools")
+install.packages("BiocManager")
+
+BiocManager::install("msa")
+devtools::install_bitbucket("Grantlab/bio3d-view")
+```
+
+
+```{r}
+library(bio3d)
+
+pdb <- read.pdb("1hsg")
+pdb
+```
+
+```{r}
+attributes(pdb)
+```
+
+```{r}
+pdb$atom
+```
+
+#Select protein only atoms
+
+```{r}
+prot <- atom.select(pdb, string = "protein", value = TRUE)
+lig <- atom.select(pdb, string = "ligand", value = TRUE)
+
 
 ```
+
+#And then write out these new PDB objects with the 'write.pdb()' function.
+
+```{r}
+write.pdb(lig, file="1hsg_ligand.pdb")
+write.pdb(prot, file = "1hsg_protein.pdb")
+```
+
+
 
 
