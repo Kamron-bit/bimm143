@@ -1,0 +1,40 @@
+---
+title: "class14.Rmd"
+author: "Kamron Kimball"
+date: "2/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+gene <- read.table("rs8067378_ENSG00000172057.6.txt")
+boxplot(gene$exp)
+summary(gene$exp)
+```
+
+Extract the A/A rows
+```{r}
+gene.type <- gene$geno == "A/A"
+gene[gene.type,]
+gene[gene.type,]$exp
+summary(gene[gene.type,]$exp)
+```
+
+same thing except for G/G
+```{r}
+gene.type2 <- gene$geno == "G/G"
+gene[gene.type2,]
+gene[gene.type2,]$exp
+boxplot(exp~geno, data=gene, notch=T)
+```
+
+
+
+
+
+
+
