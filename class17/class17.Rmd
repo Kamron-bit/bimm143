@@ -1,0 +1,140 @@
+---
+title: "Biological Network Analysis"
+author: "Kamron Kimball"
+date: "3/3/2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Setup
+
+We first have to setup the packages we need. These include **igraph** from CRAN and **RCy3** from bioconductor. Install these with **install.packages** and **BiocManager::install("RCy3")**.
+
+We can then library these packages.
+
+```{r}
+library(RCy3)
+library(igraph)
+library(RColorBrewer)
+```
+
+We can also check our connection with cytoscape and test making a network and sending it to cytoscape.
+
+```{r}
+cytoscapePing()
+g <- makeSimpleIgraph()
+createNetworkFromIgraph(g,"myGraph")
+```
+
+We can include this Cytoscape rendered network image in our report with the following code:
+
+```{r}
+fig <- exportImage(filename="demo", type="png", height=350)
+```
+
+We can also customize the visuals of the network:
+```{r}
+setVisualStyle("Marquee")
+```
+
+These are all of the different styles available.
+
+```{r}
+styles <- getVisualStyleNames()
+styles
+```
+
+The network can also be plotted within R itself:
+
+```{r}
+plot(g)
+```
+
+## Read our Data
+
+We first have to read our data into R.
+
+```{r}
+## scripts for processing located in "inst/data-raw/"
+prok_vir_cor <- read.delim("./virus_prok_cor_abundant.tsv", stringsAsFactors = FALSE)
+
+## Have a peak at the first 6 rows
+head(prok_vir_cor)
+```
+
+How many connections (i.e. edges) will we have in our network - lets look at the number of rows.
+
+```{r}
+nrow(prok_vir_cor)
+```
+
+
+The igraph package allows us to convert this dataframe into a network we can send to Cytoscape.
+
+```{r}
+g <- graph.data.frame(prok_vir_cor, directed = FALSE)
+```
+
+The plot of this data requires arguments to turn it into a readable network.
+
+```{r}
+plot(g)
+plot(g, vertex.label=NA)
+plot(g, vertex.size=3, vertex.label=NA)
+```
+
+When its readable, we can then send it to Cytoscape.
+
+```{r}
+createNetworkFromIgraph(g,"myIgraph")
+```
+
+## Network Community Detection
+
+Lets cluster our network to find "community" structure...
+
+Community structure detection algorithms try to find dense sub-graphs within larger network graphs (i.e. clusters of well connected nodes that are densely connected themselves but sparsely connected to other nodes outside the cluster) . Here we use the classic Girvan & Newman betweenness clustering method. The igraph package has lots of different community detection algorithms (i.e. different methods for finding communities).
+
+```{r}
+cb <- cluster_edge_betweenness(g)
+cb
+```
+
+```{r}
+plot(cb, y=g, vertex.label=NA,  vertex.size=3)
+```
+
+##Centrality analysis
+
+Centrality gives an estimation on how important a node or edge is for the connectivity (or the information flow) of a network. It is a particularly useful parameter in signaling networks and it is often used when trying to find drug targets for example.
+
+Centrality analysis often aims to answer the following question: Which nodes are the most important and why?
+
+One centrality method that you can often find in publications is the Google PageRank score. For the explanation of the PageRank algorithm, see the following webpage: http://infolab.stanford.edu/~backrub/google.html
+
+```{r}
+pr <- page_rank(g)
+head(pr$vector)
+```
+
+Lets plot our network with nodes size scaled via this page rank centrality scores.
+
+```{r}
+# Make a size vector btwn 2 and 20 for node plotting size
+
+v.size <- BBmisc::normalize(pr$vector, range=c(2,20), method="range")
+plot(g, vertex.size=v.size, vertex.label=NA)
+```
+
+
+
+
+
+
+
+
+
+
