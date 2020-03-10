@@ -5,4 +5,4 @@ This is my classwork from [BIMM-143](https://bioboot.github.io/bimm143_W20/lectu
 This site is a repository for the coursework and R excercises that were done during BIMM 143.
 
 #Index of Material
-Class 9: link to class 9 [link](https://bioboot.github.io/bimm143_W20/class-material/Lecture19_BIMM143.pdf)
+Class 9: link to class 9 [Class 9](https://github.com/Kamron-bit/bimm143/tree/master/class09)
